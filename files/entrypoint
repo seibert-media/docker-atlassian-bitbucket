@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if [ "$(stat -c "%Y" "${BITBUCKET_INST}/bin/set-bitbucket-home.sh")" -eq "0" ]; then
+  sed --in-place "s~export BITBUCKET_HOME=~export BITBUCKET_HOME=$BITBUCKET_HOME~" ${BITBUCKET_INST}/bin/set-bitbucket-home.sh
+fi
+
+if [ "$(stat -c "%Y" "${BITBUCKET_INST}/conf/server.xml")" -eq "0" ]; then
+  if [ -n "${TOMCAT_PROXY_NAME}" ]; then
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="7990"]' --type "attr" --name "proxyName" --value "${TOMCAT_PROXY_NAME}" "${BITBUCKET_INST}/conf/server.xml"
+  fi
+  if [ -n "${TOMCAT_PROXY_PORT}" ]; then
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="7990"]' --type "attr" --name "proxyPort" --value "${TOMCAT_PROXY_PORT}" "${BITBUCKET_INST}/conf/server.xml"
+  fi
+  if [ -n "${TOMCAT_PROXY_SCHEME}" ]; then
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="7990"]' --type "attr" --name "scheme" --value "${TOMCAT_PROXY_SCHEME}" "${BITBUCKET_INST}/conf/server.xml"
+  fi
+  if [ -n "${TOMCAT_PROXY_SECURE}" ]; then
+    xmlstarlet ed --inplace --pf --ps --insert '//Connector[@port="7990"]' --type "attr" --name "secure" --value "${TOMCAT_PROXY_SECURE}" "${BITBUCKET_INST}/conf/server.xml"
+  fi
+  if [ -n "${TOMCAT_CONTEXT_PATH}" ]; then
+    xmlstarlet ed --inplace --pf --ps --update '//Context/@path' --value "${TOMCAT_CONTEXT_PATH}" "${BITBUCKET_INST}/conf/server.xml"
+  fi
+fi
+
+if [ "$(stat -c "%Y" "${BITBUCKET_INST}/bin/setenv.sh")" -eq "0" ]; then
+  if [ -n "${JVM_MEMORY_MIN}" ]; then
+    sed --in-place "s/JVM_MINIMUM_MEMORY=\".*\"/JVM_MINIMUM_MEMORY=\"${JVM_MEMORY_MIN}\" /" ${BITBUCKET_INST}/bin/setenv.sh
+  fi
+  if [ -n "${JVM_MEMORY_MAX}" ]; then
+    sed --in-place "s/JVM_MAXIMUM_MEMORY=\".*\"/JVM_MAXIMUM_MEMORY=\"${JVM_MEMORY_MAX}\" /" ${BITBUCKET_INST}/bin/setenv.sh
+  fi
+fi
+
+nohup ${BITBUCKET_INST}/bin/start-bitbucket.sh >/dev/null 2>&1 &
+
+/bin/bash
