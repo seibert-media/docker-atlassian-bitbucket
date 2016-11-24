@@ -7,7 +7,8 @@ FROM anapsix/alpine-java:8_server-jre
 
 MAINTAINER //SEIBERT/MEDIA GmbH <docker@seibert-media.net>
 
-ENV VERSION 0.0.0
+ARG VERSION
+
 ENV BITBUCKET_INST /opt/atlassian/bitbucket
 ENV BITBUCKET_HOME /var/opt/atlassian/application-data/bitbucket
 
