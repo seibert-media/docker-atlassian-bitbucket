@@ -22,6 +22,13 @@ This is a Docker-Image for Atlassian Bitbucket based on [Alpine Linux](http://al
 * 7990
 * 7999
 
+## Build conatiner
+Specify the application version in the build command:
+
+```bash
+docker build --build-arg VERSION=x.x.x .                                                        
+```
+
 ## Getting started
 
 Run Bitbucket standalone and navigate to `http://[dockerhost]:7990` to finish configuration:
@@ -36,7 +43,7 @@ Run Bitbucket standalone with customised jvm settings and navigate to `http://[d
 docker run -tid -p 7990:7990 -p 7999:7999 -e JVM_MEMORY_MIN=2g -e JVM_MEMORY_MAX=4g seibertmedia/atlassian-bitbucket:latest
 ```
 
-Specify persistent volume for Bitbucket data directory and redirect application logs to stdout:
+Specify persistent volume for Bitbucket data directory:
 
 ```bash
 docker run -tid -p 7990:7990 -p 7999:7999 -v bitbucket_data:/var/opt/atlassian/application-data/bitbucket seibertmedia/atlassian-bitbucket:latest
