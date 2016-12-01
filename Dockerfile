@@ -43,4 +43,6 @@ EXPOSE 7999
 
 USER daemon
 
+VOLUME $BITBUCKET_HOME
+
 ENTRYPOINT  ["/usr/local/bin/entrypoint"]
