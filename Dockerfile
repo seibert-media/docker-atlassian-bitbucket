@@ -31,9 +31,11 @@ RUN set -x \
   && touch -d "@0" "$BITBUCKET_INST/bin/setenv.sh" \
   && touch -d "@0" "$BITBUCKET_INST/bin/set-bitbucket-home.sh"
 
+ADD files/service /usr/local/bin/service
 ADD files/entrypoint /usr/local/bin/entrypoint
 
 RUN set -x \
+  && chown -R daemon:daemon /usr/local/bin/service \
   && chown -R daemon:daemon /usr/local/bin/entrypoint \
   && chown -R daemon:daemon $BITBUCKET_INST \
   && chown -R daemon:daemon $BITBUCKET_HOME
@@ -46,3 +48,5 @@ USER daemon
 VOLUME $BITBUCKET_HOME
 
 ENTRYPOINT  ["/usr/local/bin/entrypoint"]
+
+CMD ["/usr/local/bin/service"]
