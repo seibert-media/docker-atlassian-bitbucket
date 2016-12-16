@@ -13,7 +13,7 @@ ENV BITBUCKET_INST /opt/atlassian/bitbucket
 ENV BITBUCKET_HOME /var/opt/atlassian/application-data/bitbucket
 
 RUN set -x \
-  && apk add git tar xmlstarlet --update-cache --allow-untrusted --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+  && apk add git tar perl xmlstarlet --update-cache --allow-untrusted --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
   && rm -rf /var/cache/apk/*
 
 RUN set -x \
