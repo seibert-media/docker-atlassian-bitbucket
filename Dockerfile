@@ -34,7 +34,7 @@ ADD https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucke
 ADD https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz /tmp
 
 RUN set -x \
-  && tar xvfz /tmp/atlassian-bitbucket-$VERSION.tar.gz --strip-components=1 -C $BITBUCKET_INST \
+  && tar xfz /tmp/atlassian-bitbucket-$VERSION.tar.gz --strip-components=1 -C $BITBUCKET_INST \
   && rm /tmp/atlassian-bitbucket-$VERSION.tar.gz \
   && chmod -R 700 "${BITBUCKET_INST}/conf" \
   && chmod -R 700 "${BITBUCKET_INST}/logs" \
@@ -47,7 +47,7 @@ RUN set -x \
   && chown -R $SYSTEM_USER:$SYSTEM_GROUP $BITBUCKET_HOME
 
 RUN set -x \
-  && tar xvfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $BITBUCKET_INST/atlassian-bitbucket/WEB-INF/lib/ \
+  && tar xfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $BITBUCKET_INST/atlassian-bitbucket/WEB-INF/lib/ \
   && rm /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz
 
 RUN set -x \
