@@ -35,7 +35,16 @@ ADD https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-$MYSQL_
 
 RUN set -x \
   && tar xvfz /tmp/atlassian-bitbucket-$VERSION.tar.gz --strip-components=1 -C $BITBUCKET_INST \
-  && rm /tmp/atlassian-bitbucket-$VERSION.tar.gz
+  && rm /tmp/atlassian-bitbucket-$VERSION.tar.gz \
+  && chmod -R 700 "${BITBUCKET_INST}/conf" \
+  && chmod -R 700 "${BITBUCKET_INST}/logs" \
+  && chmod -R 700 "${BITBUCKET_INST}/temp" \
+  && chmod -R 700 "${BITBUCKET_INST}/work" \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP "${BITBUCKET_INST}/conf" \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP "${BITBUCKET_INST}/logs" \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP "${BITBUCKET_INST}/temp" \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP "${BITBUCKET_INST}/work" \
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP $BITBUCKET_HOME
 
 RUN set -x \
   && tar xvfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $BITBUCKET_INST/atlassian-bitbucket/WEB-INF/lib/ \
@@ -51,9 +60,7 @@ ADD files/entrypoint /usr/local/bin/entrypoint
 
 RUN set -x \
   && chown -R $SYSTEM_USER:$SYSTEM_GROUP /usr/local/bin/service \
-  && chown -R $SYSTEM_USER:$SYSTEM_GROUP /usr/local/bin/entrypoint \
-  && chown -R $SYSTEM_USER:$SYSTEM_GROUP $BITBUCKET_INST \
-  && chown -R $SYSTEM_USER:$SYSTEM_GROUP $BITBUCKET_HOME
+  && chown -R $SYSTEM_USER:$SYSTEM_GROUP /usr/local/bin/entrypoint
 
 EXPOSE 7990 7999
 
