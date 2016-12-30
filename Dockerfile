@@ -17,7 +17,7 @@ ENV SYSTEM_GROUP bitbucket
 ENV SYSTEM_HOME /home/bitbucket
 
 RUN set -x \
-  && apk add git tar perl xmlstarlet wget ca-certificates --update-cache --allow-untrusted --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+  && apk add git tar perl xmlstarlet wget ca-certificates openssh --update-cache --allow-untrusted --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
   && rm -rf /var/cache/apk/*
 
 RUN set -x \
