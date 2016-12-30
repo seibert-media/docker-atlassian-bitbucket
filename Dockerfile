@@ -17,7 +17,7 @@ ENV SYSTEM_GROUP bitbucket
 ENV SYSTEM_HOME /home/bitbucket
 
 RUN set -x \
-  && apk add git tar perl xmlstarlet --update-cache --allow-untrusted --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
+  && apk add git tar perl xmlstarlet wget ca-certificates --update-cache --allow-untrusted --repository http://dl-cdn.alpinelinux.org/alpine/edge/main --repository http://dl-cdn.alpinelinux.org/alpine/edge/community \
   && rm -rf /var/cache/apk/*
 
 RUN set -x \
@@ -30,11 +30,9 @@ RUN set -x \
   && adduser -S -D -G $SYSTEM_GROUP -h $SYSTEM_GROUP -s /bin/sh $SYSTEM_USER \
   && chown -R $SYSTEM_USER:$SYSTEM_GROUP /home/$SYSTEM_USER
 
-ADD https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-$VERSION.tar.gz /tmp
-ADD https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz /tmp
-
 RUN set -x \
-  && tar xfz /tmp/atlassian-bitbucket-$VERSION.tar.gz --strip-components=1 -C $BITBUCKET_INST \
+  && wget -O /tmp/atlassian-bitbucket-$VERSION.tar.gz https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-$VERSION.tar.gz \
+  && tar xvfz /tmp/atlassian-bitbucket-$VERSION.tar.gz --strip-components=1 -C $BITBUCKET_INST \
   && rm /tmp/atlassian-bitbucket-$VERSION.tar.gz \
   && chmod -R 700 "${BITBUCKET_INST}/conf" \
   && chmod -R 700 "${BITBUCKET_INST}/logs" \
@@ -47,7 +45,8 @@ RUN set -x \
   && chown -R $SYSTEM_USER:$SYSTEM_GROUP $BITBUCKET_HOME
 
 RUN set -x \
-  && tar xfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $BITBUCKET_INST/atlassian-bitbucket/WEB-INF/lib/ \
+  && wget -O /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz \
+  && tar xvfz /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz mysql-connector-java-$MYSQL_JDBC_VERSION/mysql-connector-java-$MYSQL_JDBC_VERSION-bin.jar -C $BITBUCKET_INST/atlassian-bitbucket/WEB-INF/lib/ \
   && rm /tmp/mysql-connector-java-$MYSQL_JDBC_VERSION.tar.gz
 
 RUN set -x \
