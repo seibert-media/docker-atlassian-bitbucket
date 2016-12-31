@@ -34,14 +34,7 @@ RUN set -x \
   && wget -nv -O /tmp/atlassian-bitbucket-${VERSION}.tar.gz https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-${VERSION}.tar.gz \
   && tar xvfz /tmp/atlassian-bitbucket-${VERSION}.tar.gz --strip-components=1 -C ${BITBUCKET_INST} \
   && rm /tmp/atlassian-bitbucket-${VERSION}.tar.gz \
-  && chmod -R 700 "${BITBUCKET_INST}/conf" \
-  && chmod -R 700 "${BITBUCKET_INST}/logs" \
-  && chmod -R 700 "${BITBUCKET_INST}/temp" \
-  && chmod -R 700 "${BITBUCKET_INST}/work" \
-  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} "${BITBUCKET_INST}/conf" \
-  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} "${BITBUCKET_INST}/logs" \
-  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} "${BITBUCKET_INST}/temp" \
-  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} "${BITBUCKET_INST}/work" \
+  && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_INST} \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_HOME}
 
 RUN set -x \
