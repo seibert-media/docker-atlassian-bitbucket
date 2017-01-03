@@ -32,14 +32,14 @@ RUN set -x \
 
 RUN set -x \
   && wget -nv -O /tmp/atlassian-bitbucket-${VERSION}.tar.gz https://www.atlassian.com/software/stash/downloads/binary/atlassian-bitbucket-${VERSION}.tar.gz \
-  && tar xvfz /tmp/atlassian-bitbucket-${VERSION}.tar.gz --strip-components=1 -C ${BITBUCKET_INST} \
+  && tar xfz /tmp/atlassian-bitbucket-${VERSION}.tar.gz --strip-components=1 -C ${BITBUCKET_INST} \
   && rm /tmp/atlassian-bitbucket-${VERSION}.tar.gz \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_INST} \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_HOME}
 
 RUN set -x \
   && wget -nv -O /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz \
-  && tar xvfz /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz mysql-connector-java-${MYSQL_JDBC_VERSION}/mysql-connector-java-${MYSQL_JDBC_VERSION}-bin.jar -C ${BITBUCKET_INST}/atlassian-bitbucket/WEB-INF/lib/ \
+  && tar xfz /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz mysql-connector-java-${MYSQL_JDBC_VERSION}/mysql-connector-java-${MYSQL_JDBC_VERSION}-bin.jar -C ${BITBUCKET_INST}/atlassian-bitbucket/WEB-INF/lib/ \
   && rm /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz
 
 RUN set -x \
