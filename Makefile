@@ -5,11 +5,16 @@ default: build
 
 all: build upload clean
 
-clean:
+clean: checkvars
 	docker rmi $(REGISTRY)/seibertmedia/atlassian-bitbucket:$(VERSION)
 
-build:
+build: checkvars
 	docker build --no-cache --rm=true --build-arg VERSION=$(VERSION) -t $(REGISTRY)/seibertmedia/atlassian-bitbucket:$(VERSION) .
 
-upload:
+upload: checkvars
 	docker push $(REGISTRY)/seibertmedia/atlassian-bitbucket:$(VERSION)
+
+checkvars:
+ifndef VERSION
+	$(error env variable VERSION has to be set)
+endif
