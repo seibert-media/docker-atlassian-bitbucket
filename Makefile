@@ -1,4 +1,4 @@
-VERSION ?= 4.12.1
+ATLASSIAN_VERSION ?= $(VERSION)
 REGISTRY ?= docker.seibert-media.net
 
 default: build
@@ -9,7 +9,7 @@ clean: checkvars
 	docker rmi $(REGISTRY)/seibertmedia/atlassian-bitbucket:$(VERSION)
 
 build: checkvars
-	docker build --no-cache --rm=true --build-arg VERSION=$(VERSION) -t $(REGISTRY)/seibertmedia/atlassian-bitbucket:$(VERSION) .
+	docker build --no-cache --rm=true --build-arg VERSION=$(ATLASSIAN_VERSION) -t $(REGISTRY)/seibertmedia/atlassian-bitbucket:$(VERSION) .
 
 upload: checkvars
 	docker push $(REGISTRY)/seibertmedia/atlassian-bitbucket:$(VERSION)
