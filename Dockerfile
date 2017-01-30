@@ -8,7 +8,6 @@ FROM anapsix/alpine-java:8_server-jre
 MAINTAINER //SEIBERT/MEDIA GmbH <docker@seibert-media.net>
 
 ARG VERSION
-ARG MYSQL_JDBC_VERSION
 
 ENV BITBUCKET_INST /opt/atlassian/bitbucket
 ENV BITBUCKET_HOME /var/opt/atlassian/application-data/bitbucket
@@ -36,12 +35,6 @@ RUN set -x \
   && rm /tmp/atlassian-bitbucket-${VERSION}.tar.gz \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_INST} \
   && chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_HOME}
-
-RUN set -x \
-  && wget -nv -O /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz \
-  && tar xfz /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz /tmp \
-  && cp /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}/mysql-connector-java-${MYSQL_JDBC_VERSION}-bin.jar ${BITBUCKET_INST}/atlassian-bitbucket/WEB-INF/lib/ \
-  && rm /tmp/mysql-connector-java-${MYSQL_JDBC_VERSION}.tar.gz
 
 RUN set -x \
   && touch -d "@0" "${BITBUCKET_INST}/conf/server.xml" \
