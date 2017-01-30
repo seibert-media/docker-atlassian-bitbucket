@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ "$(stat -c "%U" ${BITBUCKET_HOME})" != "${SYSTEM_USER}" ]; then
+  chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_HOME}
+fi
+
 if [ "$(stat -c "%Y" "${BITBUCKET_INST}/bin/set-bitbucket-home.sh")" -eq "0" ]; then
   sed --in-place "s~export BITBUCKET_HOME=~export BITBUCKET_HOME=$BITBUCKET_HOME~" ${BITBUCKET_INST}/bin/set-bitbucket-home.sh
 fi
@@ -31,4 +35,4 @@ if [ "$(stat -c "%Y" "${BITBUCKET_INST}/bin/setenv.sh")" -eq "0" ]; then
   fi
 fi
 
-exec "$@"
+exec su-exec ${SYSTEM_USER} "$@"
