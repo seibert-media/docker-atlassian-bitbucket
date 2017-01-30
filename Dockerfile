@@ -44,7 +44,7 @@ RUN set -x \
 ADD files/service /usr/local/bin/service
 ADD files/entrypoint /usr/local/bin/entrypoint
 
-EXPOSE 7990 7999
+EXPOSE 7990 7999 8009
 
 VOLUME ${BITBUCKET_HOME}
 
