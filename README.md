@@ -8,16 +8,27 @@ This is a Docker-Image for Atlassian Bitbucket based on [Alpine Linux](http://al
 * Setting application context path
 * Setting JVM xms and xmx values
 * Setting proxy parameters in server.xml to run it behind a reverse proxy (TOMCAT_PROXY_* ENV)
-* Includes MySQL JDBC driver
 
 ## Variables
 
-* TOMCAT_PROXY_NAME
-* TOMCAT_PROXY_PORT
-* TOMCAT_PROXY_SCHEME
-* TOMCAT_CONTEXT_PATH
+* TOMCAT_CONTEXT_PATH: default context path for bitbucket is "/"
+
+Using with HTTP reverse proxy, not necessary with AJP:
+
+* TOMCAT_PROXY_NAME: domain of bitbucket instance
+* TOMCAT_PROXY_PORT: e.g. 443
+* TOMCAT_PROXY_SCHEME: e.g. "https"
+
+JVM memory management:
+
 * JVM_MEMORY_MIN
 * JVM_MEMORY_MAX
+
+Crowd:
+
+* To enable SSO change 'plugin.auth-crowd.sso.enabled' in 'BITBUCKET_HOME/shared/bitbucket.properties' to 'true'.
+* The file is being created by the setup process, it may not exist directly after startup.
+Ref.: [Bitbucket Docs](https://confluence.atlassian.com/bitbucketserver/connecting-bitbucket-server-to-crowd-776640399.html#ConnectingBitbucketServertoCrowd-Singlesign-on(SSO)withCrowd)
 
 ## Ports
 * 7990
@@ -27,7 +38,7 @@ This is a Docker-Image for Atlassian Bitbucket based on [Alpine Linux](http://al
 Specify the application version in the build command:
 
 ```bash
-docker build --build-arg VERSION=x.x.x --build-arg MYSQL_JDBC_VERSION=5.1.40 .                                                        
+docker build --build-arg VERSION=x.x.x .                                                        
 ```
 
 ## Getting started

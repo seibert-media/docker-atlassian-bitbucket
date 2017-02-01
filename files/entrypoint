@@ -1,10 +1,16 @@
 #!/bin/bash
 
+if [ "$(stat -c "%U" ${BITBUCKET_HOME})" != "${SYSTEM_USER}" ]; then
+  chown -R ${SYSTEM_USER}:${SYSTEM_GROUP} ${BITBUCKET_HOME}
+fi
+
 if [ "$(stat -c "%Y" "${BITBUCKET_INST}/bin/set-bitbucket-home.sh")" -eq "0" ]; then
   sed --in-place "s~export BITBUCKET_HOME=~export BITBUCKET_HOME=$BITBUCKET_HOME~" ${BITBUCKET_INST}/bin/set-bitbucket-home.sh
 fi
 
 if [ "$(stat -c "%Y" "${BITBUCKET_INST}/conf/server.xml")" -eq "0" ]; then
+  xmlstarlet ed --inplace -s '//Service[@name="Catalina"]' -t "elem" -n 'Connector port="8009" URIEncoding="UTF-8" enableLookups="false" protocol="AJP/1.3"' "${BITBUCKET_INST}/conf/server.xml"
+
   if [ -n "${TOMCAT_PROXY_NAME}" ]; then
     xmlstarlet ed --inplace --insert '//Connector[@port="7990"]' --type "attr" --name "proxyName" --value "${TOMCAT_PROXY_NAME}" "${BITBUCKET_INST}/conf/server.xml"
   fi
@@ -31,4 +37,4 @@ if [ "$(stat -c "%Y" "${BITBUCKET_INST}/bin/setenv.sh")" -eq "0" ]; then
   fi
 fi
 
-exec "$@"
+exec su-exec ${SYSTEM_USER} "$@"
